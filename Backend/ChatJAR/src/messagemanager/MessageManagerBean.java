@@ -1,5 +1,10 @@
 package messagemanager;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
@@ -11,6 +16,8 @@ import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
 import javax.jms.Session;
+
+import models.Performative;
 
 /**
  * Session Bean implementation class MessageManagerBean
@@ -46,27 +53,35 @@ public class MessageManagerBean implements MessageManagerRemote {
 		}
 	}
 
-	
-	private Message createTextMessage(AgentMessage amsg) {
-		ObjectMessage message = null;
+
+
+	private Message createJMSMessage(ACLMessage message) {
+		ObjectMessage jmsMessage = null;
 		try {
-			message = session.createObjectMessage(amsg); 
+			jmsMessage = session.createObjectMessage(message);
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
-		return message;
-		
-		
+		return jmsMessage;
 	}
 
 	@Override
-	public void post(AgentMessage msg) {
+	public void post(ACLMessage msg) {
 		try {
-			defaultProducer.send(createTextMessage(msg));
+			defaultProducer.send(createJMSMessage(msg));
 			System.out.println("Entered message manager");
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
+		
+	}
+
+	@Override
+	public List<String> getPerformatives() {
+		List<String> result = new ArrayList<String>();
+		for(Performative p : Performative.values())
+			result.add(p.toString());
+		return result;
 	}
 
 }

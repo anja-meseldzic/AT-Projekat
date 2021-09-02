@@ -10,24 +10,29 @@ import models.User;
 @Remote
 public interface ChatManagerRemote {
 
+	public boolean register(String username, String password);
 
-	public boolean register(User user);
-	
-	public List<User> registeredUsers();
+	public boolean logIn(String username, String password);
 
-	public List<User> loggedInUsers();
-	
-	public boolean logOut(String id);
-	
-	public void saveMessage(Message message);
-	
-	public List<Message> allMessages(User user);
-	
-	public User getLoggedInUser(String id);
-	
-	public User getUserByUsername(String username);
+	public boolean logOut(String username);
 
-	public boolean login(User user, String id);
-	
+	public List<User> getRegistered();
+
+	public List<User> getLoggedIn();
+
+	public Message saveMessage(String sender, String receiver, String subject, String content);
+
 	public List<Message> getMessages(String username);
+
+	public boolean existsLoggedIn(String username);
+
+	public boolean existsRegistered(String username);
+
+	public void addMessage(Message message);
+
+	public void addRegistered(User user);
+
+	public void addLoggedIn(User user);
+
+	public void removeLoggedIn(User user);
 }

@@ -1,27 +1,28 @@
 package rest;
 
+import java.util.List;
+import java.util.Set;
+
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import agentmanager.AgentManagerRemote;
 import messagemanager.ACLMessage;
-import messagemanager.AgentMessage;
+
 import messagemanager.MessageManagerRemote;
-import messagemanager.MessageOptions;
+
 import models.AID;
-import models.User;
+import models.AgentType;
+
 
 @Stateless
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
 @Path("/chat")
-@LocalBean
 @Remote(ChatRest.class)
 public class ChatBeanRest implements ChatRest {
 	
@@ -29,118 +30,40 @@ public class ChatBeanRest implements ChatRest {
 	@EJB
 	MessageManagerRemote msm;		
 	
+	@EJB
+	AgentManagerRemote agm;
+
 	@Override
-	public void getLoggedInUsers(String sender) {
-		AgentMessage agentMessage = new AgentMessage(sender, MessageOptions.GET_ALL_LOGGED_IN);
-		msm.post(agentMessage);
-	}
-	
-	@Override
-	public void getRegisteredUsers(String sender) {
-		AgentMessage agentMessage = new AgentMessage(sender, MessageOptions.GET_ALL);
-		msm.post(agentMessage);
-		
+	public Set<AgentType> getAgentTypes() {
+		return agm.getAgentTypes();
 	}
 
-
 	@Override
-	public void logIn(User user, String sender) {
-		AgentMessage agentMessage = new AgentMessage(sender, MessageOptions.LOG_IN);
-		agentMessage.addAttribute("username", user.getUsername());
-		agentMessage.addAttribute("password", user.getPassword());
-		msm.post(agentMessage);
-		
+	public Set<AID> getRunningAgents() {
+		return agm.getRunningAgents();
 	}
 
-
-
-
 	@Override
-	public void logOut(String sender, String id) {
-		AgentMessage agentMessage = new AgentMessage(sender, MessageOptions.LOG_OUT);
-		agentMessage.addAttribute("id", id);
-		msm.post(agentMessage);
-		
-	}	
-
-
-
-
-	@Override
-	public void register(User user, String sender) {
-		AgentMessage agentMessage = new AgentMessage(sender, MessageOptions.REGISTER);
-		agentMessage.addAttribute("username", user.getUsername());
-		agentMessage.addAttribute("password", user.getPassword());
-		msm.post(agentMessage);
-		
-	}
-	@Override
-	public void sendToAll(@PathParam("sender") String sender, @PathParam("subject") String subject, @PathParam("content") String content) {
-		AgentMessage agentMessage = new AgentMessage(sender, MessageOptions.SEND_ALL);
-		agentMessage.addAttribute("subject", subject);
-		agentMessage.addAttribute("content", content);
-		msm.post(agentMessage);
-	}
-
-
-
-	@Override
-	public void sendToUser(String sender, String receiver, String subject, String content) {
-		AgentMessage agentMessage = new AgentMessage(sender, MessageOptions.SEND_USER);
-		agentMessage.addAttribute("receiver", receiver);
-		agentMessage.addAttribute("subject", subject);
-		agentMessage.addAttribute("content", content);
-		msm.post(agentMessage);
-		
-	}
-
-
-	@Override
-	public void getMessages(String sender) {
-		AgentMessage agentMessage = new AgentMessage(sender, MessageOptions.GET_ALL_MESSAGES);
-		msm.post(agentMessage);
+	public void startAgent(AgentType type, String name) {
+		agm.startAgent(type, name);
 		
 	}
 
 	@Override
-	public void getAgentTypes() {
-		//ACLMessage aclMessage = new ACLMessage();
+	public void stopAgent(AID aid) {
+		agm.stopAgent(aid);
 		
 	}
 
 	@Override
-	public void getRunningAgents(String sender) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void stopAgent(String aid) {
-		// TODO Auto-generated method stub
+	public void sendMessage(ACLMessage message) {
+		msm.post(message);
 		
 	}
 
 	@Override
-	public void sendMessage() {
-		// TODO Auto-generated method stub
-		
+	public List<String> getPerformatives() {
+		return msm.getPerformatives();
 	}
-
-	@Override
-	public void getPerformatives() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void startAgent(String type, String name, String sender) {
-		AgentMessage agentMessage = new AgentMessage(sender, MessageOptions.RUN_AGENT);
-		agentMessage.addAttribute("type", type);
-		agentMessage.addAttribute("name", name);
-		msm.post(agentMessage);
-		
-	}
-	
 	
 }

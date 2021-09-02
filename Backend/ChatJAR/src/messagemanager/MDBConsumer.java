@@ -1,5 +1,8 @@
 package messagemanager;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.EJB;
 import javax.ejb.MessageDriven;
@@ -10,6 +13,8 @@ import javax.jms.ObjectMessage;
 
 import agentmanager.AgentManagerRemote;
 import agents.Agent;
+import models.AID;
+import ws.Logger;
 
 /**
  * Message-Driven Bean implementation class for: MDBConsumer
@@ -22,20 +27,31 @@ public class MDBConsumer implements MessageListener {
 
 	@EJB
 	AgentManagerRemote agentManager;
-	
+	@EJB Logger logger;
 
 	public void onMessage(Message message) {
 		try {
-			AgentMessage agentMessage = (AgentMessage) ((ObjectMessage) message).getObject();
-			Agent agent = agentManager.getAgentById(agentMessage.getSender());
-			System.out.println("agent: " + agent);
-			System.out.println("id: " + agentMessage.getSender());
-			if (agent != null)
-				agent.handleMessage(agentMessage);
+			ACLMessage agentMessage = (ACLMessage) ((ObjectMessage) message).getObject();
+			for (AID aid : agentMessage.getReceivers()) {
+				
+				Set<AID> receivers = new HashSet<AID>();
+				receivers.add(aid);
+				agentMessage.setReceivers(receivers);
+				
+				Agent agent = agentManager.getRunningAgentByAID(aid);
+				if (agent != null) {
+					log(agentMessage);
+					agent.handleMessage(agentMessage);
+				}
+			}
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
-		
+
+	}
+
+	private void log(ACLMessage message) {
+		logger.send(logger.ACLToString(message));
 	}
 
 }

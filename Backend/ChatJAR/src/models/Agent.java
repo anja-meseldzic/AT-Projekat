@@ -1,22 +1,19 @@
 package models;
 
-public class Agent {
-	private AID id;
+public abstract class Agent implements agents.Agent {
 
-	public Agent() {}
+	private static final long serialVersionUID = 1L;
+
+	protected AID aid;
 	
-	public Agent(AID id) {
-		super();
-		this.id = id;
-	}
-
-	public AID getId() {
-		return id;
-	}
-
-	public void setId(AID id) {
-		this.id = id;
+	@Override
+	public void init(AID aid) {
+		this.aid = aid;
 	}
 	
+	@Override
+	public AID getAID() {
+		return aid;
+	}
 	
 }

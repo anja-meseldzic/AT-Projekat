@@ -25,7 +25,7 @@ import models.User;
 import util.JNDILookup;
 
 @Singleton
-@ServerEndpoint("/ws")
+@ServerEndpoint("/ws/agent")
 @LocalBean
 public class WSEndPoint {
 
