@@ -4,6 +4,9 @@ import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.Remote;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.management.AttributeNotFoundException;
 import javax.management.InstanceNotFoundException;
 import javax.management.MBeanException;
@@ -14,6 +17,9 @@ import javax.management.ReflectionException;
 
 import models.AgentCenter;
 
+@Singleton
+@Remote(AgentCenterRemote.class)
+@Startup
 public class AgentCenterManager implements AgentCenterRemote{
 
 	private static final long serialVersionUID = 1L;

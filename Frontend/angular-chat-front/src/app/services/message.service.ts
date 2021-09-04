@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ACLMessage } from '../model/aclmessage';
 
 @Injectable({
   providedIn: 'root'
@@ -10,15 +12,11 @@ export class MessageService {
 
   private baseUrl : string = 'http://localhost:8081/ChatWAR/rest/chat/messages/';
 
-  send(receiver : string, subject : string, content : string) {
-    this.http.post(this.baseUrl + "user/" + localStorage.getItem('sessionId') + "/" + receiver + "/" + subject + "/" + content, null).subscribe();
+  sendMessage(message: ACLMessage) : Observable<any> {
+    return this.http.post(this.baseUrl, message);
   }
 
-  sendToAll(subject : string, content : string) {
-    this.http.post(this.baseUrl + "all/" + localStorage.getItem('sessionId') + "/" + subject + "/" + content, null).subscribe();
-  }
-
-  getMessages() {
-    this.http.get(this.baseUrl + localStorage.getItem('sessionId')).subscribe();
+  getPerformatives() : Observable<string[]>{
+    return this.http.get<string[]>(this.baseUrl);
   }
 }

@@ -18,6 +18,8 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSortModule } from '@angular/material/sort';
 import {MatSelectModule} from '@angular/material/select';
+import {MatListModule} from '@angular/material/list';
+import { RunningAgentsComponent } from './running-agents/running-agents.component';
 
 
  
@@ -27,7 +29,8 @@ import {MatSelectModule} from '@angular/material/select';
     AppComponent,
     HomePageComponent,
     LandingPageComponent,
-    MessagesComponent
+    MessagesComponent,
+    RunningAgentsComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +56,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatSortModule,
     FormsModule,
     MatToolbarModule,
-    MatSelectModule
+    MatSelectModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

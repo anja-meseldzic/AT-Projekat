@@ -17,6 +17,14 @@ import messagemanager.MessageManagerRemote;
 public abstract class JNDILookup {
 
 	public static final String JNDIPathChat = "ejb:ChatEAR/ChatJAR//";
+	public static final String AgentManagerLookup = JNDIPathChat + AgentManagerBean.class.getSimpleName() + "!"
+			+ AgentManagerRemote.class.getName();
+	public static final String MessageManagerLookup = JNDIPathChat + MessageManagerBean.class.getSimpleName() + "!"
+			+ MessageManagerRemote.class.getName();
+	public static final String UserAgentLookup = JNDIPathChat + UserAgent.class.getSimpleName() + "!"
+			+ Agent.class.getName() + "?stateful";
+	public static final String ChatManagerLookup = JNDIPathChat + ChatManagerBean.class.getSimpleName() + "!"
+			+ ChatManagerRemote.class.getName();
 
 	@SuppressWarnings("unchecked")
 	public static <T> T lookUp(String name, Class<T> c) {

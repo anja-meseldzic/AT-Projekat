@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
-import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { catchError, tap, switchAll, share } from 'rxjs/operators';
 import { EMPTY, Subject } from 'rxjs';
+import { catchError, share, switchAll, tap } from 'rxjs/operators';
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 
 @Injectable({
   providedIn: 'root'
 })
-export class WsService {
+export class TypeSocketService {
 
-  private WS_ENDPOINT : string = 'ws://localhost:8081/ChatWAR/ws/agent';
+  constructor() { }
+
+  private WS_ENDPOINT : string = 'ws://localhost:8081/ChatWAR/ws/type';
 
   private socket$: WebSocketSubject<any>;
   private messagesSubject$ = new Subject();
@@ -23,7 +25,7 @@ export class WsService {
         }), catchError(_ => EMPTY));
       this.messagesSubject$.next(messages);
       this.socket$.subscribe({
-        complete: () => { localStorage.removeItem('sessionId') }
+        complete: () => { console.log('connection with agent socket closed') }
       })
     }
   }
@@ -38,7 +40,5 @@ export class WsService {
 
   close() {
     this.socket$.complete();
-    localStorage.removeItem('sessionId');
   }
-  constructor() { }
 }

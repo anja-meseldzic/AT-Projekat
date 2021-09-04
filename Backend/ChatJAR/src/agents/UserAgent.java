@@ -35,7 +35,7 @@ import ws.WSEndPoint;
 
 @Stateful
 @Remote(Agent.class)
-public class UserAgent extends models.Agent {
+public class UserAgent extends models.AgentModel {
 
 	private static final long serialVersionUID = 1L;
 

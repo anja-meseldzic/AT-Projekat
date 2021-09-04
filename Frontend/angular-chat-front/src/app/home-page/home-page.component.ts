@@ -4,6 +4,8 @@ import { UserService } from '../services/user.service';
 import { WsService } from '../services/ws.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { TypeSocketService } from '../services/type-socket.service';
+import { AgentType } from '../model/agent-type';
 
 
 @Component({
@@ -13,55 +15,31 @@ import { Router } from '@angular/router';
 })
 export class HomePageComponent implements OnInit {
 
-  public username1 : string;
-  public password1: string;
-  public username : string;
-  public password : string;
+  liveData$ = this.typeSocketService.messages$;
 
-  liveData$ = this.wsService.messages$;
-
-  constructor(private userService : UserService, private wsService: WsService, private snackBar : MatSnackBar, private router : Router) { 
+  constructor(private userService : UserService, private typeSocketService: TypeSocketService) { 
     this.liveData$.subscribe({
       next : msg => this.handleMessage(msg as string)
     });
   }
 
-  ngOnInit(): void {
+  types : AgentType[] =[];
+  type : AgentType
+  agentName : string = ''
+
+  public start() {
+    if(this.types.includes(this.type) && this.agentName.length > 0)
+      this.userService.startAgent(this.type, this.agentName).subscribe()
   }
 
-  login(){
-    this.userService.login(this.username,this.password);
-  }
-  register(){
-    this.userService.register(this.username1,this.password1);
+  ngOnInit(): void {
+    this.typeSocketService.connect();
+    this.userService.getAgentTypes().subscribe(
+      data => this.types = data
+    )
   }
 
   handleMessage(message : string) {
-    if(message.match('.+:.*')) {
-      var type = message.split(':')[0];
-      var content = message.split(':')[1];
-      if(type == 'login')
-        this.handleLogin(content);
-      else if(type == 'register')
-        this.handleRegistration(content);
-    }
-  }
-
-  handleLogin(message : string) {
-    if(message.startsWith('OK ')) {
-      localStorage.setItem('id', message.substring(3));
-      this.router.navigate(['home']);
-    }
-    else {
-      this.openSnackBar(message);
-    }
-  }
-
-  handleRegistration(message : string) {
-    this.openSnackBar(message);
-  }
-
-  openSnackBar(message : string) {
-    this.snackBar.open(message, 'Okay', {duration : 5000});
+    this.types = JSON.parse(message);
   }
 }

@@ -32,7 +32,7 @@ export class MessagesComponent implements OnInit {
       next : msg => this.handleMessage(msg as string)
     });
     this.wsService.connect();
-    setTimeout(() => {this.messageService.getMessages()}, 500)
+    
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -92,16 +92,6 @@ export class MessagesComponent implements OnInit {
     this.setUpDisplayedMessages();
   }
 
-  send() {
-    this.messageService.send(this.selected, this.subject, this.content)
-    this.subject = ""
-    this.content = ""
-  }
 
-  sendToAll() {
-    this.messageService.sendToAll(this.subject, this.content)
-    this.subject = ""
-    this.content = ""
-  }
 
 }

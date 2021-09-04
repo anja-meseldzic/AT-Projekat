@@ -21,7 +21,7 @@ export class LandingPageComponent implements OnInit {
       next : msg => this.handleMessage(msg as string)
     });
     this.wsService.connect();
-    setTimeout(() => {this.userService.getLoggedIn(),this.userService.getRegistered();}, 500)
+    
   }
 
   ngOnInit(): void {

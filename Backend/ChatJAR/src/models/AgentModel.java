@@ -1,6 +1,6 @@
 package models;
 
-public abstract class Agent implements agents.Agent {
+public abstract class AgentModel implements agents.Agent {
 
 	private static final long serialVersionUID = 1L;
 

@@ -1,6 +1,11 @@
 package models;
 
-public class AgentCenter {
+import java.io.Serializable;
+
+
+public class AgentCenter implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	private String alias;
 	private String address;
@@ -31,5 +36,10 @@ public class AgentCenter {
 		this.address = address;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		AgentCenter center = (AgentCenter)obj;
+		return center.alias.equals(alias);
+	}
 	
 }

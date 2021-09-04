@@ -9,5 +9,7 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ChatWAR"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.8.0_281"/>
+	<classpathentry kind="lib" path="C:/Users/Anja/Desktop/ilija-at/agentEnvironment/ChatService-war/WebContent/WEB-INF/lib/jackson-core-2.11.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Anja/Desktop/ilija-at/agentEnvironment/ChatService-war/WebContent/WEB-INF/lib/jackson-databind-2.11.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

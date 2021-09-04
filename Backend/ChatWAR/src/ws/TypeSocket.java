@@ -1,35 +1,21 @@
 package ws;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
 import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
-import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-import agentmanager.AgentManagerBean;
-import agentmanager.AgentManagerRemote;
-import chatmanager.ChatManagerBean;
-import chatmanager.ChatManagerRemote;
-import models.User;
-import util.JNDILookup;
-
+@ServerEndpoint("/ws/type")
 @Singleton
-@ServerEndpoint("/ws/agent")
 @LocalBean
-public class WSEndPoint {
-
-	static Set<Session> sessions = new HashSet<Session>();
+public class TypeSocket {
+	private Set<Session> sessions = new HashSet<Session>();
 
 	@OnOpen
 	public void onOpen(Session session) {
@@ -37,13 +23,13 @@ public class WSEndPoint {
 	}
 
 	@OnClose
-	public void close(Session session) {
+	public void onClose(Session session) {
 		sessions.remove(session);
 	}
 
 	public void send(String message) {
 		try {
-			for(Session session : sessions)
+			for (Session session : sessions)
 				session.getBasicRemote().sendText(message);
 		} catch (IOException e) {
 			e.printStackTrace();

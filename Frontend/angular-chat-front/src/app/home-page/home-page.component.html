@@ -1,33 +1,29 @@
-<body>
-<h1>Welcome to home page</h1>
-<div class ="center">
-    <h2>Log in</h2>
-    <form class="example-form">
-        <mat-form-field class="example-full-width">
-          <mat-label style="font-size: 20px;padding-bottom: 10px;">Username</mat-label>
-          <input matInput name = "user" [(ngModel)] = "username">
-        </mat-form-field>
-      
-        <mat-form-field class="example-full-width">
-            <mat-label style="font-size: 20px;padding-bottom: 10px;">Password</mat-label>
-            <input matInput name = "pass" [(ngModel)] = "password" type="password">
-          </mat-form-field>
-          <button mat-raised-button color="accent" (click) = login()>Log in</button>
-      </form>
+<div style="background-color: rgb(221, 148, 53);">
+  <h2>Agent types:</h2>
+  <mat-list role="list">
+    <mat-list-item role="listitem" *ngFor="let type of types">
+        {{type.host}}@{{type.module}}@{{type.name}}
+    </mat-list-item>
+  </mat-list>
+  <h2>Start agent</h2>
+  <div style="width: 100%; height: max-content;">
+    <div style="width: 100%;">
+      <mat-form-field appearance="fill" style="width: 100%;">
+        <mat-label>Select agent type</mat-label>
+        <mat-select [(value)]="type">
+          <mat-option [value]="t" *ngFor="let t of types">{{t.host}}@{{t.module}}@{{t.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div style="width: 100%;">
+      <mat-form-field style="width: 100%;">
+        <mat-label>Agent name</mat-label>
+        <input matInput id="nameInput" #name = "ngModel" name="c1" [(ngModel)] = "agentName"/>
+      </mat-form-field>
+    </div>
+    <button mat-stroked-button (click)="start()" style="margin-left: 40%; width: 20%;">Start</button>
+  </div>
+  <h2>Running agents:</h2>
+        <app-running-agents></app-running-agents>
+  
 </div>
-<div class ="center">
-    <h2>Don't have an account ? Register!</h2>
-    <form class="example-form">
-        <mat-form-field class="example-full-width">
-          <mat-label style="font-size: 20px;padding-bottom: 10px;">Enter username</mat-label>
-          <input matInput name = "username" [(ngModel)] = "username1">
-        </mat-form-field>
-      
-        <mat-form-field class="example-full-width">
-            <mat-label style="font-size: 20px;padding-bottom: 10px;">Enter password</mat-label>
-            <input matInput name= "password" [(ngModel)] = "password1" type="password">
-          </mat-form-field>
-          <button mat-raised-button color="accent" (click) = register()>Register</button>
-      </form>
-</div>
-</body>

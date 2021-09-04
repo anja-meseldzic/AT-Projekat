@@ -1,10 +1,6 @@
 package agentmanager;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -12,8 +8,8 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Remote;
 import javax.ejb.Singleton;
-import javax.ejb.Stateless;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import agents.Agent;
 import agents.UserAgent;
 import models.AID;
@@ -44,10 +40,14 @@ public class AgentManagerBean implements AgentManagerRemote {
 
 		Agent agent = (Agent) JNDILookup
 				.lookUp(type.getModule() + type.getName() + "!" + Agent.class.getName() + "?stateful", Agent.class);
+
 		if (agent != null) {
 			agent.init(new models.AID(name, acm.getHost(), type));
+			System.out.println(agent.getAID());
+			System.out.println(agent.getClass().getCanonicalName());
 			if (runningAgents.stream().noneMatch(a -> a.getAID().equals(agent.getAID()))) {
 				runningAgents.add(agent);
+				updateViaSocket();
 			}
 		}
 	}
@@ -60,7 +60,9 @@ public class AgentManagerBean implements AgentManagerRemote {
 
 	@Override
 	public void stopAgent(AID aid) {
+		System.out.println(aid);
 		runningAgents.removeIf(a -> a.getAID().equals(aid));
+		updateViaSocket();
 	}
 
 	@Override
@@ -80,5 +82,17 @@ public class AgentManagerBean implements AgentManagerRemote {
 	public Agent getRunningAgentByAID(AID aid) {
 		return runningAgents.stream().filter(a -> a.getAID().equals(aid)).findFirst().orElse(null);
 	}
+	
+	private void updateViaSocket() {
+	    try {
+	    	Set<AID> agents = getRunningAgents();
+			ObjectMapper mapper = new ObjectMapper();
+			String agentsJSON = mapper.writeValueAsString(agents);
+			agentSocket.send(agentsJSON);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+	}
+	
 
 }
