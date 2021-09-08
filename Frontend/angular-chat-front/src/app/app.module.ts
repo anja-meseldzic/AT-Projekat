@@ -20,6 +20,8 @@ import { MatSortModule } from '@angular/material/sort';
 import {MatSelectModule} from '@angular/material/select';
 import {MatListModule} from '@angular/material/list';
 import { RunningAgentsComponent } from './running-agents/running-agents.component';
+import { ConsoleLoggerComponent } from './console-logger/console-logger.component';
+import { SendMessageComponent } from './send-message/send-message.component';
 
 
  
@@ -30,7 +32,9 @@ import { RunningAgentsComponent } from './running-agents/running-agents.componen
     HomePageComponent,
     LandingPageComponent,
     MessagesComponent,
-    RunningAgentsComponent
+    RunningAgentsComponent,
+    ConsoleLoggerComponent,
+    SendMessageComponent
   ],
   imports: [
     BrowserModule,

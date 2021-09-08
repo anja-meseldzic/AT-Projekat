@@ -54,7 +54,7 @@ public class AgentManagerBean implements AgentManagerRemote {
 
 	private Set<AgentType> getLocalAgentTypes() {
 		Set<AgentType> types = new HashSet<AgentType>();
-		types.add(new AgentType(UserAgent.class.getSimpleName(), JNDILookup.JNDIPathChat, acm.getHost().getAlias()));
+		types.add(new AgentType(UserAgent.class.getSimpleName(), JNDILookup.JNDIPathChat, acm.getHost().getAddress()));
 		return types;
 	}
 

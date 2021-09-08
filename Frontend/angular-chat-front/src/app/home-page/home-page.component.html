@@ -1,12 +1,14 @@
-<div style="background-color: rgb(221, 148, 53);">
+<div style="background-color: rgb(206, 183, 248);">
+  <div style="width: 80%; margin-left: 5%;">
   <h2>Agent types:</h2>
   <mat-list role="list">
     <mat-list-item role="listitem" *ngFor="let type of types">
         {{type.host}}@{{type.module}}@{{type.name}}
     </mat-list-item>
   </mat-list>
+  </div>
+  <div style="width: 80%; margin-left: 5%; height: max-content;">
   <h2>Start agent</h2>
-  <div style="width: 100%; height: max-content;">
     <div style="width: 100%;">
       <mat-form-field appearance="fill" style="width: 100%;">
         <mat-label>Select agent type</mat-label>
@@ -23,7 +25,18 @@
     </div>
     <button mat-stroked-button (click)="start()" style="margin-left: 40%; width: 20%;">Start</button>
   </div>
-  <h2>Running agents:</h2>
-        <app-running-agents></app-running-agents>
+  <div style="width: 80%; margin-left: 5%;">
+    <h2>Running agents:</h2>
+    <app-running-agents></app-running-agents>
+  </div>
+  <div style="width: 80%; margin-left: 5%;">
+    <h2>Send acl message:</h2>
+        <app-send-message></app-send-message>
+  </div>
+        
+  <div style="width: 80%; margin-left: 5%;">
+    <h2>Console:</h2>
+    <app-console-logger></app-console-logger>
+  </div>
   
 </div>

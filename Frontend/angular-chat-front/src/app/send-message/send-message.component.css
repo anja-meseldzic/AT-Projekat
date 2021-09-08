@@ -1,0 +1,18 @@
+.body-content {
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+  float:left;
+}
+
+.left-container {
+    float: left;
+    width: 40%;
+}
+
+.right-container {
+    width: 50%;
+    padding-left: 5%;
+  float:left;
+}
+

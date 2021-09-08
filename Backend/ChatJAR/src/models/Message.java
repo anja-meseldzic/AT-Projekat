@@ -3,6 +3,10 @@ package models;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+
 public class Message implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -63,5 +67,23 @@ public class Message implements Serializable {
 		this.content = content;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		Message message = (Message)obj;
+		return sender.equals(message.sender) &&
+				receiver.equals(message.receiver) &&
+				time.equals(message.time) &&
+				subject.equals(message.subject) &&
+				content.equals(message.content);
+	}
 	
+	@Override
+	public String toString() {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			return super.toString();
+		}
+	}
 }

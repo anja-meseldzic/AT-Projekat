@@ -105,11 +105,6 @@ public class UserAgent extends models.AgentModel {
 			getAllMessages(username);
 			break;
 		}
-		case PERFORMED: {
-			AID agentToStop = msg.getSender();
-			agm.stopAgent(agentToStop);
-			break;
-		}
 		default:
 			return;
 		}
@@ -119,23 +114,23 @@ public class UserAgent extends models.AgentModel {
 	private void logIn(String username, String password) {
 		boolean success = chm.logIn(username, password);
 		if (success) {
-			logger.send("User with username " + username + " successfully logged in");
+			logger.send("User " + username + " is logged in");
 		} else
-			logger.send("User with username " + username + " doesn't exist or the password is incorrect");
+			logger.send("User " + username + " doesn't exist or the password is incorrect");
 	}
 
 	private void register(String username, String password) {
 		boolean success = chm.register(username, password);
 		if (success) {
-			logger.send("User with username " + username + " successfully registered");
+			logger.send("User " + username + " is registered");
 		} else
-			logger.send("User with username " + username + " already exists");
+			logger.send("User " + username + " already exists");
 	}
 
 	private void logOut(String username) {
 		if (loggedIn(username)) {
 			chm.logOut(username);
-			logger.send("User with username " + username + " successfully logged out");
+			logger.send("User " + username + " is logged out");
 		}
 	}
 
@@ -149,18 +144,18 @@ public class UserAgent extends models.AgentModel {
 	private void getRegistered(String username) {
 		if (loggedIn(username)) {
 			List<User> users = chm.getRegistered();
-			logger.send("Registered users: " + users);
+			logger.send("Registered users are: " + users);
 		}
 	}
 
 	private void sendMessage(String sender, String receiver, String subject, String content) {
 		if (loggedIn(sender)) {
 			if (!chm.existsRegistered(receiver)) {
-				logger.send("Reciever with username " + receiver + " doesn't exist");
+				logger.send("Reciever " + receiver + " doesn't exist");
 				return;
 			}
 			Message message = chm.saveMessage(sender, receiver, subject, content);
-			logger.send("Message: " + message + " sent");
+			logger.send("Message: " + message + "has been sent");
 		}
 	}
 
@@ -173,13 +168,13 @@ public class UserAgent extends models.AgentModel {
 	private void getAllMessages(String username) {
 		if (loggedIn(username)) {
 			List<Message> messages = chm.getMessages(username);
-			logger.send("Messages for user with username " + username + ": " + messages);
+			logger.send("Messages for user " + username + ": " + messages);
 		}
 	}
 
 	private boolean loggedIn(String username) {
 		if (!chm.existsLoggedIn(username)) {
-			logger.send("User with username " + username + " is not logged in");
+			logger.send("User " + username + " isn't logged in");
 			return false;
 		}
 		return true;

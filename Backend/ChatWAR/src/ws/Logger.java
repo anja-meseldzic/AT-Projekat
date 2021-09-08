@@ -44,12 +44,12 @@ private Set<Session> sessions = new HashSet<Session>();
 	public String ACLToString(ACLMessage message) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("ACL MESSAGE - ");
-		sb.append("\n");
-		sb.append("FROM: ");
+		sb.append(System.getProperty("line.separator"));
+		sb.append(" FROM: ");
 		sb.append(message.getSender().getType().getName());
 		sb.append("-");
 		sb.append(message.getSender().getName());
-		sb.append("\n");
+		sb.append(System.getProperty("line.separator"));
 		sb.append(" TO: ");
 		for(AID receiver : message.getReceivers()) {
 			sb.append(receiver.getType().getName());
@@ -57,15 +57,16 @@ private Set<Session> sessions = new HashSet<Session>();
 			sb.append(receiver.getName());
 			sb.append(" ");
 		}
-		sb.append("\n");
-		sb.append("CONTENT: ");
+		sb.append(System.getProperty("line.separator"));
+		sb.append(" CONTENT: ");
 		sb.append(message.getContent());
-		sb.append("\n");
-		sb.append("PERFORMATIVE: ");
+		sb.append(System.getProperty("line.separator"));
+		sb.append(" PERFORMATIVE: ");
 		sb.append(message.getPerformative().toString());
-		sb.append("\n");
-		sb.append("USER ARGS: ");
+		sb.append(System.getProperty("line.separator"));
+		sb.append(" USER ARGS: ");
 		sb.append(message.getUserArgs().toString());
+		System.out.println(sb.toString());
 		return sb.toString();
 	}
 }
